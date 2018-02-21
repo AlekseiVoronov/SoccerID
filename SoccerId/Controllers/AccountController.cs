@@ -183,7 +183,7 @@ namespace SoccerId.Controllers
 
                     await UserManager.AddToRoleAsync(customer.Id, "player");
                     FormsAuthentication.SetAuthCookie(model.Email, true);  
-                    return RedirectToAction("About", "Home");
+                    return RedirectToAction("UserPage", "Home");
                 }
                 else
                 {

@@ -223,7 +223,27 @@ namespace SoccerId.Models
 
             context.EventPlaces.AddRange(epList);
 
-            
+            var teamList = new List<Team>
+            {
+                new Team{TeamName = "Газпромнефть"},
+                new Team{TeamName = "Урожайная"},
+                new Team{TeamName = "Сябар-Бертон Ли"},
+                new Team{TeamName = "Блуграна"},
+                new Team{TeamName = "Сандерленд"},
+                new Team{TeamName = "КовчегСервис"},
+                new Team{TeamName = "Виктория"},
+                new Team{TeamName = "Дублин"},
+                new Team{TeamName = "АРТ-старс"},
+                new Team{TeamName = "Мозилла Фаерфокс"},
+                new Team{TeamName = "РентМоторс"},
+                new Team{TeamName = "Орел"},
+                new Team{TeamName = "Маланка"},
+                new Team{TeamName = "Фаворит"},
+                new Team{TeamName = "Серебрянка"},
+                new Team{TeamName = "Звезда ВВС"}
+            };
+            context.Teams.AddRange(teamList);
+
             var userManager = new UserManager(new AppUserStore(context));
             var roleManager = new RoleManager<AppRole, int>(new RoleStore<AppRole, int, AppUserRole>(context));
 
