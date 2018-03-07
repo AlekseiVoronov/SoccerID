@@ -185,6 +185,18 @@ namespace SoccerId.Controllers
             return View();
         }
 
+        public ActionResult TeamPage()
+        {
+            ViewBag.Message = "Your contact page.";
+            return View();
+        }
+
+        public ActionResult LeaguePage()
+        {
+            ViewBag.Message = "Your contact page.";
+            return View();
+        }
+
         public ActionResult AdminPage()
         {
             ViewBag.Message = "Your Admin page.";

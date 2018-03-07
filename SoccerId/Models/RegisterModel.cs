@@ -11,7 +11,7 @@ namespace SoccerId.Models
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
-        public string Email{ get;set;}
+        public string Email { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "Значение {0} должно содержать не менее {2} символов.", MinimumLength = 6)]
@@ -24,6 +24,19 @@ namespace SoccerId.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "Пароли не совпадают.")]
         public string PasswordConfirm { get; set; }
+
+        /// /////////////////////////
+        /// [Required]
+        [Display(Name = "Выбор команды")]
+        IEnumerable<SoccerId.Entities.Team> Teams { get; set; }
+        public string TeamName { get; set; }
+        /// ///                  
+    }
+    public class SelectTeam
+    {
+        [Required]
+        [Display(Name = "Выбор команды")]
+        public string TeamName { get; set; }
     }
 
 

@@ -90,16 +90,26 @@ namespace SoccerId.Controllers
                         IsPersistent = true,
                     }, claim);
 
-                    IList<string> roles = new List<string> {};
+                    IList<string> roles = new List<string> { };
                     UserManager userManager = HttpContext.GetOwinContext().GetUserManager<UserManager>();
                     User users = userManager.FindByEmail(User.Identity.Name);
                     roles = userManager.GetRoles(user.Id);
                     foreach (var item in roles)
-                        if (item=="admin") {
-
-                        return RedirectToAction("AdminPage", "Home");
+                    {
+                        if (item == "admin")
+                        {
+                            return RedirectToAction("AdminPage", "Home");
+                        }
+                        else if (item == "teamManager")
+                        {
+                            return RedirectToAction("TeamPage", "Home");
+                        }
+                        else if (item == "leagueManager")
+                        {
+                            return RedirectToAction("LeaguePage", "Home");
                         }
                         else { return RedirectToAction("UserPage", "Home"); }
+                    }
                 }
                 else
                 {
@@ -170,11 +180,13 @@ namespace SoccerId.Controllers
         {
             if (ModelState.IsValid)
             {
+                IEnumerable<Team> teams = db.Teams;
 
                 User customer = new User
                 {
                     UserName = model.Email,
-                    Email = model.Email
+                    Email = model.Email,
+
                 };
                 IdentityResult result = await UserManager.CreateAsync(customer, model.Password);
 
@@ -182,8 +194,8 @@ namespace SoccerId.Controllers
                 {
 
                     await UserManager.AddToRoleAsync(customer.Id, "player");
-                    FormsAuthentication.SetAuthCookie(model.Email, true);  
-                    return RedirectToAction("UserPage", "Home");
+                    FormsAuthentication.SetAuthCookie(model.Email, true);
+                    return RedirectToAction("About", "Home");
                 }
                 else
                 {
@@ -197,9 +209,41 @@ namespace SoccerId.Controllers
             return View(model);
         }
 
-        
+        //////////////////////////////// SelectTeam  ////////////////////////////////////////////
 
-       
+        SoccerIdDBContext db = new SoccerIdDBContext();
+
+        public ActionResult SelectTeam()
+        {
+            SelectList teams = new SelectList(db.Teams);
+            ViewBag.Teams = teams;
+            List<SelectListItem> items = new List<SelectListItem>();
+            foreach (var tp in db.Teams.ToList())
+            {
+                SelectListItem li = new SelectListItem
+                {
+                    Value = tp.TeamName,
+                    Text = tp.TeamName
+                };
+                items.Add(li);
+            }
+            ViewBag.Teams = items;
+
+
+
+            return View(db.Teams.ToList());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SelectTeam(string TeamName)
+        {
+            List<SelectListItem> items = new List<SelectListItem>();
+            ViewBag.Teams = items;
+            return View();
+        }
+
+
 
         // /// ///////////////////////////////////////////////   EDIT  ////////////////////////////////////////////////////////////////////
 

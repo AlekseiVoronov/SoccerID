@@ -15,7 +15,7 @@ namespace SoccerId
     {
         protected void Application_Start()
         {
-            Database.SetInitializer<SoccerIdDBContext>(new SoccerIdDBInitializer());           
+            //Database.SetInitializer<SoccerIdDBContext>(new SoccerIdDBInitializer());           
             
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

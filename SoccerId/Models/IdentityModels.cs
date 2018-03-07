@@ -22,14 +22,14 @@ namespace SoccerId.Models
     int, AppUserLogin, AppUserRole, AppUserClaim>
     {
         public SoccerIdDBContext() : base("SoccerIdDB") { }
-        protected  override void OnModelCreating(DbModelBuilder modelBuilder)
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-                
+
             modelBuilder.HasDefaultSchema("SoccerLeagues");
             modelBuilder.Entity<User>().ToTable("Users");
-                                        //.Property(p => p.UserName)
-                                        //.HasColumnName("FirstName");            
+            //.Property(p => p.UserName)
+            //.HasColumnName("FirstName");            
             //modelBuilder.Entity<User>().Ignore(c => c.AccessFailedCount)
             //                            .Ignore(c => c.LockoutEnabled)
             //                            .Ignore(c => c.LockoutEndDateUtc)
@@ -37,8 +37,8 @@ namespace SoccerId.Models
             //                            .Ignore(c => c.EmailConfirmed)
             //                            .Ignore(c => c.PhoneNumberConfirmed)
             //                            .Ignore(c => c.TwoFactorEnabled);                                   
-                                                  
-                                                    
+
+
 
             modelBuilder.Entity<UserArchiveTeam>().ToTable("UsersArchiveTeams");
             modelBuilder.Entity<TeamLogo>().ToTable("TeamLogos");
@@ -49,11 +49,11 @@ namespace SoccerId.Models
             modelBuilder.Entity<AppRole>().ToTable("Roles");
             modelBuilder.Entity<AppUserRole>().ToTable("UserRoles");
             modelBuilder.Entity<AppUserClaim>().ToTable("UserClaims");
-                                                    //.Ignore(c => c.ClaimType)
-                                                   // .Ignore(c => c.ClaimValue);
-                                                    
-            modelBuilder.Entity<AppUserLogin>().ToTable("UserLogins");          
-                                                   
+            //.Ignore(c => c.ClaimType)
+            // .Ignore(c => c.ClaimValue);
+
+            modelBuilder.Entity<AppUserLogin>().ToTable("UserLogins");
+
 
             modelBuilder.Entity<Chat>()
                         .HasMany<User>(a => a._Participants)
@@ -120,8 +120,8 @@ namespace SoccerId.Models
             : base(context)
         {
         }
-    }   
-   
+    }
+
 
     public class UserManager : UserManager<User, int>
     {
@@ -162,7 +162,7 @@ namespace SoccerId.Models
         //    throw new NotImplementedException();
         //}
     }
-    
+
     public class RoleManager : RoleManager<AppRole, int>
     {
         public RoleManager(RoleStore<AppRole, int, AppUserRole> store)
@@ -223,6 +223,8 @@ namespace SoccerId.Models
 
             context.EventPlaces.AddRange(epList);
 
+
+
             var teamList = new List<Team>
             {
                 new Team{TeamName = "Газпромнефть"},
@@ -257,12 +259,29 @@ namespace SoccerId.Models
             roleManager.Create(teamManagerRole);
             roleManager.Create(playerRole);
             string adminPassword = "P@ssword1";
+            string leaguePassword = "P@ssword2";
+            string teamPassword = "P@ssword3";
+            string playerPassword = "P@ssword4";
 
             User admin = new User { UserName = "admin@mail.com", Email = "admin@mail.com" };
             res = userManager.Create(admin, adminPassword);
-            if (res.Succeeded)           
+            if (res.Succeeded)
                 userManager.AddToRole(admin.Id, adminRole.Name);
-            
+
+            User league = new User { UserName = "league@mail.com", Email = "league@mail.com" };
+            res = userManager.Create(league, leaguePassword);
+            if (res.Succeeded)
+                userManager.AddToRole(league.Id, leagueManagerRole.Name);
+
+            User team = new User { UserName = "team@mail.com", Email = "team@mail.com" };
+            res = userManager.Create(team, teamPassword);
+            if (res.Succeeded)
+                userManager.AddToRole(team.Id, teamManagerRole.Name);
+
+            User player = new User { UserName = "player1@mail.com", Email = "player1@mail.com" };
+            res = userManager.Create(player, playerPassword);
+            if (res.Succeeded)
+                userManager.AddToRole(player.Id, playerRole.Name);
 
             //try
             //{
@@ -298,7 +317,7 @@ namespace SoccerId.Models
             //        }
             //    }
             //}
-            
+
             //// /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             //var positionList = new List<PlayingPosition> {
@@ -398,7 +417,7 @@ namespace SoccerId.Models
             //                    newUser._PlayingPositions.Add(position);
             //                }
             //                result = userManager.Create(newUser, adminPassword);
-                            
+
             //            }
             //            catch (DbEntityValidationException ex)
             //            {
@@ -416,7 +435,7 @@ namespace SoccerId.Models
             //            {
             //                if (result.Succeeded)
             //                {
-                               
+
             //                    if (flag == 0)
             //                    {
             //                        userManager.AddToRole(newUser.Id, playerRole.Name);
@@ -444,7 +463,7 @@ namespace SoccerId.Models
             //            newUser._CurrentTeam = newTeam;
             //            newTeam._Players.Add(newUser);
 
-                       
+
 
             //            int addedId = context.Entry(newArchTeam).Entity.Id;
             //            UserArchiveTeam newUserArchTeam = new UserArchiveTeam { _ArchiveTeam = newArchTeam, _User = newUser, User_Id = newUser.Id, ArchiveTeam_Id = addedId };
